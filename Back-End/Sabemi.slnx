@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Sabemi.Api/Sabemi.Api.csproj" />
+    <Project Path="Sabemi.Application/Sabemi.Application.csproj" Id="1ba9d207-9f53-41cd-8c78-b839f21f48a2" />
+    <Project Path="Sabemi.Domain/Sabemi.Domain.csproj" />
+    <Project Path="Sabemi.Infra/Sabemi.Infra.csproj" Id="64b81d32-747a-4baa-a672-456f2f104908" />
+  </Folder>
+</Solution>
