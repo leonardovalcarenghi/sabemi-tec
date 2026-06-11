@@ -9,13 +9,17 @@ export interface PaymentEventFilter {
     status?: WebhookEventStatus;
 }
 
-const webhookService = {
+const paymentEventService = {
 
-    async listPaymentEvents(filter: PaymentEventFilter): Promise<PaymentWebhookEvent[]> {
+    async list(filter: PaymentEventFilter): Promise<PaymentWebhookEvent[]> {
         const query = toQueryParams(filter);
-        return await api.get(`${API_ROUTES.WEBHOOKS.FIND_PAYMENT_EVENTS}${query}`).then(res => res.data);
+        return await api.get(`${API_ROUTES.PAYMENT_EVENTS.BASE}${query}`).then(res => res.data);
     },
+
+    async reprocess(transactionId: string): Promise<void> {
+        await api.post(API_ROUTES.PAYMENT_EVENTS.REPROCESS, { transactionId });
+    }
 
 };
 
-export default webhookService;
+export default paymentEventService;

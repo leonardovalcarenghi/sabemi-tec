@@ -11,21 +11,17 @@ export default function Header({ }: HeaderProps) {
     return (
         <Navbar className="border-bottom">
             <Container>
-                <Navbar.Brand href={APP_ROUTES.HOME}>{env.APP_NAME}</Navbar.Brand>
+                <Navbar.Brand href={APP_ROUTES.DASHBOARD}>{env.APP_NAME}</Navbar.Brand>
                 <Nav className="ms-auto">
 
-                    <NavLink to={APP_ROUTES.HOME} className="nav-link">
-                        <span>Início</span>
+                    <NavLink to={APP_ROUTES.DASHBOARD} className="nav-link">
+                        <span>Dashboard</span>
                     </NavLink>
 
                     <NavLink to={APP_ROUTES.CONTRACTS} className="nav-link">
                         <span>Contratos</span>
                     </NavLink>
-
-                    <NavLink to={APP_ROUTES.ABOUT} className="nav-link">
-                        <span>Sobre</span>
-                    </NavLink>
-
+           
                 </Nav>
             </Container>
         </Navbar>

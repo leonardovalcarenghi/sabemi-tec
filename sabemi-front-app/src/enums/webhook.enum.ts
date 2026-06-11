@@ -14,3 +14,11 @@ export const WebhookEventStatusLabels: Record<WebhookEventStatus, string> = {
     [WebhookEventStatus.Processing]: "Processando",
     [WebhookEventStatus.Failed]: "Falhou",
 }
+
+export const WebhookEventStatusColors: Record<WebhookEventStatus, string> = {
+    [WebhookEventStatus.None]: "",
+    [WebhookEventStatus.Pending]: "",
+    [WebhookEventStatus.Processed]: "",
+    [WebhookEventStatus.Processing]: "bg-primary text-white",
+    [WebhookEventStatus.Failed]: "bg-danger text-white",
+}

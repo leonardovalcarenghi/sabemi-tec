@@ -3,7 +3,13 @@ export function formatCurrency(value: number, locale = 'pt-BR', currency = 'BRL'
 }
 
 export function formatDate(value: string | Date, locale = 'pt-BR'): string {
-    return new Intl.DateTimeFormat(locale, { day: '2-digit', month: '2-digit', year: 'numeric' }).format(
+    return new Intl.DateTimeFormat(locale, { day: '2-digit', month: '2-digit', year: 'numeric', }).format(
+        typeof value === 'string' ? new Date(value) : value,
+    )
+}
+
+export function formatDateWithTime(value: string | Date, locale = 'pt-BR'): string {
+    return new Intl.DateTimeFormat(locale, { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(
         typeof value === 'string' ? new Date(value) : value,
     )
 }

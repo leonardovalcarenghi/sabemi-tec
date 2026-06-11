@@ -6,6 +6,7 @@ import contractService from "../services/contract.service";
 import ContractTableItem from "../components/common/ContractTableItem";
 import { formatCurrency } from "../utils/formatters";
 import { useSocket } from "../hooks/useSocket";
+import { toast } from "react-toastify";
 
 export default function ContractIndexPage() {
 
@@ -37,6 +38,7 @@ export default function ContractIndexPage() {
 
     const fetchContracts = async () => {
         try {
+            toast.loading("Carregando contratos...", { toastId: "fetch-contracts" });
             setIsLoading(true);
             const result = await contractService.list();
             setContracts(result);
@@ -46,6 +48,7 @@ export default function ContractIndexPage() {
         }
         finally {
             setIsLoading(false);
+            toast.dismiss("fetch-contracts");
         }
     }
 
@@ -95,13 +98,6 @@ export default function ContractIndexPage() {
             </Row>
 
             <Card className="mb-3">
-                <Card.Header className="py-3">
-                    <div className="d-flex justify-content-end align-items-center">
-                        <button className="btn btn-primary">
-                            Novo Contrato
-                        </button>
-                    </div>
-                </Card.Header>
                 <Card.Body>
 
                     {

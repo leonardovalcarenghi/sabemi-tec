@@ -5,9 +5,9 @@ const API_ROUTES = {
         BY_ID: (id: string) => `/contracts/${id}`,
     },
 
-    WEBHOOKS: {
-        BASE: "/webhooks",
-        FIND_PAYMENT_EVENTS: "/webhooks/payments/list"
+    PAYMENT_EVENTS: {
+        BASE: "/payment-events",
+        REPROCESS: `/payment-events/reprocess`
     }
 
 }
