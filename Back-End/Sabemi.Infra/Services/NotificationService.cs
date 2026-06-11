@@ -5,15 +5,24 @@ namespace Sabemi.Infra.Services;
 
 internal class NotificationService(IHubContext<NotificationHub> hub) : INotificationService
 {
+    public async Task NotifyEventCreatedAsync(Guid transactionId, CancellationToken cancellationToken)
+        => await hub.Clients.All.SendAsync($"event-created", new { transactionId }, cancellationToken);
 
-    // To do: ajustar métodos e nomenclaturas. (esta muito verboso)
-    public async Task NotifyErrorOnPaymentWebhookProcessingAsync(Guid transactionId, string errorMessage, CancellationToken cancellationToken)
+    public async Task NotifyContractCreatedAsync(Guid contractId, CancellationToken cancellationToken)
+        => await hub.Clients.All.SendAsync($"contract-created", new { contractId }, cancellationToken);
+
+
+    public async Task NotifyEventChangedAsync(Guid transactionId, CancellationToken cancellationToken)
     {
-        await hub.Clients.All.SendAsync(NotificationHub.EVENT_CONTRACT_UPDATED, new { transactionId }, cancellationToken);
+        await hub.Clients.All.SendAsync($"event-changed", cancellationToken);
+        await hub.Clients.All.SendAsync($"event-changed-#{transactionId}", cancellationToken);
     }
 
-    public async Task NotifyPaymentWebhookChangedAsync(Guid contractId, CancellationToken cancellationToken)
+    public async Task NotifyContractChangedAsync(Guid contractId, CancellationToken cancellationToken)
     {
-        await hub.Clients.All.SendAsync(NotificationHub.EVENT_CONTRACT_UPDATED, new { contractId }, cancellationToken);
+        await hub.Clients.All.SendAsync($"contract-changed", cancellationToken);
+        await hub.Clients.All.SendAsync($"contract-changed-#{contractId}", cancellationToken);
     }
+
+
 }

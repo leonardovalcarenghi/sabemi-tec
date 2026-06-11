@@ -1,25 +1,40 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Sabemi.Application.Features.Contracts;
-using Sabemi.Application.Features.Contracts.GetAllContracts;
-using Sabemi.Application.Features.Contracts.GetContractById;
+using Sabemi.Application.Features.Contracts.CreateContract;
+using Sabemi.Application.Features.Contracts.FindContractById;
+using Sabemi.Application.Features.Contracts.FindContracts;
 namespace Sabemi.Api.Controllers;
 
 [ApiController]
 [Route("contracts")]
+[Tags("Contratos")]
 public class ContractController(IMediator mediator) : ControllerBase 
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [EndpointSummary("Buscar Contratos")]
+    [EndpointDescription("Busca todos os contratos cadastrados no sistema.")]
+    public async Task<IActionResult> Find([FromQuery] FindContractsQuery query)
     {
-        IEnumerable<ContractModel> contracts = await mediator.Send(new GetAllContractsQuery());
+        IEnumerable<ContractModel> contracts = await mediator.Send(query);
         return Ok(contracts);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById([FromRoute] Guid id)
+    [EndpointSummary("Buscar Contrato por ID")]
+    [EndpointDescription("Busca um contrato específico pelo seu ID.")]
+    public async Task<IActionResult> FindById([FromRoute] Guid id)
     {
-        ContractModel contract = await mediator.Send(new GetContractByIdQuery(id));
+        ContractModel contract = await mediator.Send(new FindContractByIdQuery(id));
         return Ok(contract);
+    }
+
+    [HttpPost]
+    [EndpointSummary("Criar Contrato")]
+    [EndpointDescription("Cria um novo contrato com as informações fornecidas.")]
+    public async Task<IActionResult> Create([FromBody] CreateContractCommand command)
+    {
+        Guid newContractId = await mediator.Send(command);
+        return CreatedAtAction(nameof(FindById), new { id = newContractId }, null);
     }
 }

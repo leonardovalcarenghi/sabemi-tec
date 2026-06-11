@@ -20,7 +20,7 @@ internal class ContractPaymentMap : IEntityTypeConfiguration<ContractPayment>
 
         builder
             .Property(_ => _.Amount)
-            .IsRequired(false)
+            .IsRequired()
             .HasColumnType(Constants.DEFAULT_DECIMAL_COLUMN_TYPE);
 
         builder

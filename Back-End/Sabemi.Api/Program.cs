@@ -1,31 +1,31 @@
 using Hangfire;
+using Sabemi.Api.Configurations;
+using Sabemi.Api.Extensions;
 using Sabemi.Application;
 using Sabemi.Infra;
 using Sabemi.Infra.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<ILogger, Logger<Program>>();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
-
+builder.Logging.AddConsole();
+builder.Services.AddCustomCors();
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.AddScalar();
+    app.UseCors(CorsRegistration.LocalPolicy);
+    app.UseHangfireDashboard("/hangfire");
+    app.MapGet("/", () => Results.Redirect("/docs")).ExcludeFromDescription();
 }
 
-app.UseHangfireDashboard("/hangfire", new DashboardOptions { });
-
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
+app.UseRouting();
 app.MapControllers();
-
-app.MapHub<NotificationHub>("/hubs/notifications");
+app.MapHub<NotificationHub>("/hubs/notifications").AllowAnonymous();
 app.Run();

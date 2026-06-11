@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Sabemi.Application.Abstractions;
 using Sabemi.Domain.Interfaces.Repositories;
+using Sabemi.Infra.Persistence;
 using Sabemi.Infra.Persistence.Contexts;
 using Sabemi.Infra.Persistence.Repositories;
 using Sabemi.Infra.Services;
@@ -26,9 +27,13 @@ public static class DependencyInjection
 
     private static IServiceCollection AddContext(this IServiceCollection services, string connectionString)
     {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(connectionString);
+            options
+                .UseSqlServer(connectionString)
+                .UseLazyLoadingProxies();
         });
 
         return services;
@@ -60,6 +65,8 @@ public static class DependencyInjection
     {
         return services
             .AddScoped<IContractRepository, ContractRepository>()
+            .AddScoped<IContractStatusRepository, ContractStatusRepository>()
+            .AddScoped<IContractPaymentRepository, ContractPaymentRepository>()
             .AddScoped<IPaymentWebhookEventRepository, PaymentWebhookEventRepository>();
     }
 

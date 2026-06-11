@@ -2,8 +2,23 @@
 
 public interface INotificationService
 {
-    Task NotifyPaymentWebhookChangedAsync(Guid transactionId, CancellationToken cancellationToken);
+    /// <summary>
+    /// Notificar quando um evento de webhook for criado.
+    /// </summary>
+    Task NotifyEventCreatedAsync(Guid transactionId, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// Notificar quando um contrato for criado.
+    /// </summary>
+    Task NotifyContractCreatedAsync(Guid contractId, CancellationToken cancellationToken);
 
-    Task NotifyErrorOnPaymentWebhookProcessingAsync(Guid transactionId, string errorMessage, CancellationToken cancellationToken);
+    /// <summary>
+    /// Notificar quando um evento for atualizado.
+    /// </summary>
+    Task NotifyEventChangedAsync(Guid transactionId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Notificar quando um contrato for atualizado.
+    /// </summary>
+    Task NotifyContractChangedAsync(Guid contractId, CancellationToken cancellationToken);
 }

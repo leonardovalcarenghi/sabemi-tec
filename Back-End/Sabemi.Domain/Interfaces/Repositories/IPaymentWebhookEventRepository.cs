@@ -6,5 +6,8 @@ public interface IPaymentWebhookEventRepository : IRepository<PaymentWebhookEven
 {
     Task<bool> ExistsAsync(Guid transactionId, CancellationToken cancellationToken);
 
-    Task<PaymentWebhookEvent?> FindByTransaction(Guid transactionId, CancellationToken cancellationToken);
+    Task<PaymentWebhookEvent?> FindByTransactionAsync(Guid transactionId, CancellationToken cancellationToken);
+
+    Task UpdateStatusAsync(PaymentWebhookEvent entity, CancellationToken cancellationToken = default);
+
 }

@@ -1,10 +1,8 @@
-﻿using MediatR;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-namespace Sabemi.Application.Features.Webhooks.ReceivePaymentWebhook;
+﻿using System.Text.Json.Serialization;
 
-public class ReceivePaymentWebhookCommand : IRequest
+namespace Sabemi.Application.Features.Webhooks;
+
+public class PaymentWebhookData
 {
     [JsonPropertyName("id_transacao")]
     public Guid TransactionId { get; set; }
@@ -12,9 +10,9 @@ public class ReceivePaymentWebhookCommand : IRequest
     [JsonPropertyName("id_contrato")]
     public Guid ContractId { get; set; }
 
+    // To do: aqui eu poderia criar um enum, se der tempo faço o ajuste.
     [JsonPropertyName("status")]
-    [RegularExpression("success|failed", ErrorMessage = "Status deve ser 'success' ou 'failed'.")]
-    public string? Status { get; set; }
+    public virtual string? Status { get; set; }
 
     /// <summary>
     /// Valor do pagamento recebido.
@@ -33,9 +31,4 @@ public class ReceivePaymentWebhookCommand : IRequest
     /// </remarks>
     [JsonPropertyName("data_pagamento")]
     public DateTime? PaidAt { get; set; }
-
-    /// <summary>
-    /// Converte o comando para uma string JSON, para ser armazenada no banco de dados como payload do evento de webhook.
-    /// </summary>
-    public string ToJson() => JsonSerializer.Serialize(this);
 }

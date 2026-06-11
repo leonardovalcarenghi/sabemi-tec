@@ -5,6 +5,7 @@ namespace Sabemi.Domain.Entities;
 public class PaymentWebhookEvent : IEntity
 {
     public Guid Id { get; init; }
+    public Guid ContractId { get; private set; }
     public Guid TransactionId { get; private set; }
     public string Payload { get; private set; }
     public WebhookEventStatus Status { get; private set; }
@@ -13,15 +14,18 @@ public class PaymentWebhookEvent : IEntity
     public DateTime? ProcessedAt { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private PaymentWebhookEvent()
+    public virtual Contract? Contract { get; set; }
+
+    public PaymentWebhookEvent()
     {
         Id = Guid.NewGuid();
     }
 
-    public static PaymentWebhookEvent Create(Guid transactionId, string payload)
+    public static PaymentWebhookEvent Create(Guid contractId, Guid transactionId, string payload)
     {
         return new PaymentWebhookEvent
         {
+            ContractId = contractId,
             TransactionId = transactionId,
             Payload = payload,
             Status = WebhookEventStatus.Pending,
@@ -32,13 +36,13 @@ public class PaymentWebhookEvent : IEntity
     public void MarkAsProcessed()
     {
         Status = WebhookEventStatus.Processed;
+        ErrorMessage = null;
         ProcessedAt = DateTime.UtcNow;
     }
 
     public void MarkAsProcessing()
     {
         Status = WebhookEventStatus.Processing;
-
     }
 
     public void MarkAsFailed(string error)
