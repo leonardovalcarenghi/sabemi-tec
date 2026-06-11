@@ -5,4 +5,7 @@
     <Project Path="Sabemi.Domain/Sabemi.Domain.csproj" />
     <Project Path="Sabemi.Infra/Sabemi.Infra.csproj" Id="64b81d32-747a-4baa-a672-456f2f104908" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="Sabemi.Application.UnitTests/Sabemi.Application.UnitTests.csproj" Id="51062c7e-7cd1-4bf7-9731-c416c1c73460" />
+  </Folder>
 </Solution>

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Sabemi.Domain\Sabemi.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Sabemi.Application.UnitTests" />
+  </ItemGroup>
+
 </Project>
