@@ -27,11 +27,4 @@ public class WebhookController(IWebhookSecurityService securityService, IMediato
         await mediator.Send(command);
         return Ok();
     }
-
-    [HttpGet("payments/list")]
-    public async Task<IActionResult> FindPaymentEvents([FromQuery] FindPaymentEventCommand query)
-    {
-        IEnumerable<PaymentWebhookEventModel> results = await mediator.Send(query);
-        return Ok(results);
-    }
 }

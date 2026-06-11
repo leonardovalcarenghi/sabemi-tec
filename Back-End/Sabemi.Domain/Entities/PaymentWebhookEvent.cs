@@ -33,6 +33,13 @@ public class PaymentWebhookEvent : IEntity
         };
     }
 
+    public void MarkAsPending()
+    {
+        Status = WebhookEventStatus.Pending;
+        ErrorMessage = null;
+        ProcessedAt = null;
+    }
+
     public void MarkAsProcessed()
     {
         Status = WebhookEventStatus.Processed;
@@ -47,6 +54,7 @@ public class PaymentWebhookEvent : IEntity
 
     public void MarkAsFailed(string error)
     {
+        ProcessedAt = null;
         Status = WebhookEventStatus.Failed;
         ErrorMessage = error;
         RetryCount++;

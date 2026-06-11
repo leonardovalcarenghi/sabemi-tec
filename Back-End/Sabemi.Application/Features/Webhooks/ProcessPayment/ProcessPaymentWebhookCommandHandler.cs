@@ -32,17 +32,11 @@ public class ProcessPaymentWebhookCommandHandler(
 
             await ProcessPaymentAsync(webhookEvent, contract, data, cancellationToken);
         }
-        catch (InvalidOperationException)
-        {
-            throw;
-        }
         catch
         {
             throw new InvalidOperationException($"Erro inesperado ao processar webhook para a transação: {command.TransactionId}");
         }
     }
-
-
 
     private async Task<PaymentWebhookData> DeserializePayload(PaymentWebhookEvent webhookEvent)
     {
@@ -81,6 +75,18 @@ public class ProcessPaymentWebhookCommandHandler(
         {
             await MarkAsFailed(webhookEvent, $"Status '{data.Status}' não é 'success'.", cancellationToken);
             throw new InvalidOperationException($"Status '{data.Status}' para a transação: {webhookEvent.TransactionId}");
+        }
+
+        if (data.Amount == null || data.Amount <= 0)
+        {
+            await MarkAsFailed(webhookEvent, "Valor do pagamento é inválido.", cancellationToken);
+            throw new InvalidOperationException($"Valor do pagamento inválido para a transação: {webhookEvent.TransactionId}");
+        }
+
+        if (data.PaidAt == null)
+        {
+            await MarkAsFailed(webhookEvent, "Data de pagamento é inválida.", cancellationToken);
+            throw new InvalidOperationException($"Data de pagamento inválida para a transação: {webhookEvent.TransactionId}");
         }
 
         // Adicionar pagamento ao contrato:
